@@ -134,7 +134,7 @@ class TMC_UART:
 
 
 
-    def read_int(self, register, tries=10):
+    def read_int(self, register, tries=3):
         """this function tries to read the registry of the TMC 10 times
         if a valid answer is returned, this function returns it as an integer
 
@@ -205,7 +205,7 @@ class TMC_UART:
 
 
 
-    def write_reg_check(self, register, val, tries=10):
+    def write_reg_check(self, register, val, tries=3):
         """this function als writes a value to the register of the TMC
         but it also checks if the writing process was successfully by checking
         the InterfaceTransmissionCounter before and after writing
