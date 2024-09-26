@@ -644,7 +644,8 @@ def set_vactual(self, vactual):
     Args:
         vactual (int): value for VACTUAL
     """
-    self.tmc_uart.write_reg_check(tmc_reg.VACTUAL, vactual)
+    #self.tmc_uart.write_reg_check(tmc_reg.VACTUAL, vactual)
+    self.tmc_uart.write_reg_fast(tmc_reg.VACTUAL, vactual)
 
 
 

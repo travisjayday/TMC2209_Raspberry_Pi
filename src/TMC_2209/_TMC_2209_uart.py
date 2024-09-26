@@ -203,6 +203,37 @@ class TMC_UART:
 
         return True
 
+    def write_reg_fast(self, register, val):
+        """this function can write a value to the register of the tmc
+        1. use read_int to get the current setting of the TMC
+        2. then modify the settings as wished
+        3. write them back to the driver with this function
+
+        Args:
+            register (int): HEX, which register to write
+            val (int): value for that register
+        """
+
+        self.ser.reset_output_buffer()
+        self.ser.reset_input_buffer()
+
+        self.w_frame[1] = self.mtr_id
+        self.w_frame[2] =  register | 0x80  # set write bit
+
+        self.w_frame[3] = 0xFF & (val>>24)
+        self.w_frame[4] = 0xFF & (val>>16)
+        self.w_frame[5] = 0xFF & (val>>8)
+        self.w_frame[6] = 0xFF & val
+
+        self.w_frame[7] = self.compute_crc8_atm(self.w_frame[:-1])
+
+
+        rtn = self.ser.write(self.w_frame)
+        if rtn != len(self.w_frame):
+            self.tmc_logger.log("Err in write", Loglevel.ERROR)
+            return False
+
+        return True
 
 
     def write_reg_check(self, register, val, tries=3):
