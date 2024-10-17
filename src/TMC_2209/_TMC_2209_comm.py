@@ -306,6 +306,24 @@ def set_vsense(self,en):
     self.tmc_uart.write_reg_check(tmc_reg.CHOPCONF, chopconf)
 
 
+def set_tbl(self, tbl):
+    chopconf = self.tmc_uart.read_int(tmc_reg.CHOPCONF)
+
+    # tbl0 is set 
+    if tbl & 0b01: 
+        chopconf = self.tmc_uart.set_bit(chopconf, tmc_reg.tbl0)
+    else: 
+        chopconf = self.tmc_uart.clear_bit(chopconf, tmc_reg.tbl0)
+
+    if tbl & 0b10:
+        chopconf = self.tmc_uart.set_bit(chopconf, tmc_reg.tbl1)
+    else:
+        chopconf = self.tmc_uart.clear_bit(chopconf, tmc_reg.tbl1)
+
+    print('set chopconf to', bin(chopconf))
+    self.tmc_uart.write_reg_check(tmc_reg.CHOPCONF, chopconf)
+
+
 
 def get_internal_rsense(self):
     """returns which sense resistor voltage is used for current scaling
@@ -676,6 +694,9 @@ def set_stallguard_threshold(self, threshold):
     self.tmc_logger.log("writing sgthrs", Loglevel.INFO)
     self.tmc_uart.write_reg_check(tmc_reg.SGTHRS, threshold)
 
+
+def set_chopconf(self, chopconf):
+    self.tmc_uart.write_reg_check(tmc_reg.CHOPCONF, chopconf)
 
 
 def set_coolstep_threshold(self, threshold):

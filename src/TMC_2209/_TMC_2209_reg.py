@@ -41,6 +41,8 @@ uv_cp               = 1<<2
 
 #CHOPCONF
 vsense              = 1<<17
+tbl1                = 1<<16
+tbl0                = 1<<15
 msres0              = 1<<24
 msres1              = 1<<25
 msres2              = 1<<26
